@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime _jsRunTime
+
+<CascadingValue Value="_utilityService">
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            </div>
+
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+
+
+@code{
+    UtilityService _utilityService;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _utilityService = new UtilityService(_jsRunTime);
+        _ = _utilityService.SignalRService.ConnectIfNecessary();
+    }
+
+
+}
