@@ -1,0 +1,16 @@
+﻿.kt-pointer {
+  cursor: pointer; }
+
+.kt-live-card {
+  background-color: #242b56;
+  color: white;
+  padding: 10px 15px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  text-align: center; }
+
+.kt-flex-vertical-center {
+  display: flex;
+  align-items: center; }

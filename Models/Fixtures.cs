@@ -23,7 +23,7 @@ namespace MyResumeSite.Models
         public Team visitorTeam { get; init; }
         public Venue venue { get; init; }
 
-
+        public League league { get; set; }
         public Substitutions substitutions { get; init; }
         public Goals goals { get; init; }
         public Cards cards { get; init; }
@@ -257,7 +257,7 @@ namespace MyResumeSite.Models
     {
         public int? total { get; set; }
         public int? accurate { get; set; }
-        public float percentage { get; set; }
+        public float? percentage { get; set; }
     }
 
     public class Attacks
