@@ -12,8 +12,8 @@ else
         @foreach (var fixtureData in _fixtures.data)
         {
             <div class="col-md-6">
-                <div class="kt-live-card">
-                    <div class="row no-gutters">
+                <div class="card">
+                    <div class="row no-gutters pr-4 pl-4 pt-4 pb-0">
                         <div class="col-md-1 kt-flex-vertical-center">
                             <div class="kt-live-logo">
                                 <img class="img-fluid kt-live-team-logo my-auto" src="@fixtureData.localTeam.data.Logo_Path" />
@@ -36,14 +36,14 @@ else
                                 </h3>
                                 @if (fixtureData.time.Minute.HasValue)
                                 {
-                            <p class="small text-center">
-                                <span class="small">played: @fixtureData.time.Minute</span>
-                                @if (@fixtureData.time.Minute > 50 && fixtureData.time.Status.ToUpper() != "LIVE")
-                                {
-                                    <span class="small"> | FINISHED</span>
-                                }
-                            </p>
-                                  
+                                    <p class="small text-center">
+                                        <span class="small">played: @fixtureData.time.Minute</span>
+                                        @if (@fixtureData.time.Minute > 50 && fixtureData.time.Status.ToUpper() != "LIVE")
+                                        {
+                                            <span class="small"> | FINISHED</span>
+                                        }
+                                    </p>
+
                                 }
                                 else
                                 {
@@ -52,7 +52,7 @@ else
                                         <span class="small">
                                             Starting at: @time.ToLongTimeString() UTC | @((time.AddHours(2)).ToLongTimeString())
                                         </span>
-                               </p>
+                                    </p>
                                 }
                             </div>
                         </div>
@@ -67,11 +67,60 @@ else
                             </div>
                         </div>
                     </div>
+                    @if (fixtureData.stats?.data?.Any() ?? false)
+                    {
+                        var homeTeamStats = fixtureData.stats.data.FirstOrDefault(s => s.team_id == fixtureData.localTeam.data.Id);
+
+                        var visitorTeamStats = fixtureData.stats.data.FirstOrDefault(s => s.team_id == fixtureData.visitorTeam.data.Id);
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped small mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            @homeTeamStats.possessiontime
+                                        </td>
+                                        <td class="text-center">
+                                            Possession
+                                        </td>
+                                        <td class="text-center">
+                                            @visitorTeamStats.possessiontime
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            @homeTeamStats?.shots?.total
+                                        </td>
+                                        <td class="text-center">
+                                            Total shots
+                                        </td>
+                                        <td class="text-center">
+                                            @visitorTeamStats?.shots?.total
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            @homeTeamStats?.shots?.ongoal
+                                        </td>
+                                        <td class="text-center">
+                                           Shots on target
+                                        </td>
+                                        <td class="text-center">
+                                            @visitorTeamStats?.shots?.ongoal
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    }
                 </div>
             </div>
 
         }
+
+  
     </div>
+
 
 }
 
