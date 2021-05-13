@@ -64,4 +64,10 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MyResumeSiteModels">
+      <HintPath>..\MyResumeSiteModels\bin\Release\net5.0\MyResumeSiteModels.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

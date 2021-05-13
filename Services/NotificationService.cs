@@ -20,7 +20,15 @@ namespace MyResumeSite.Services
         {
             try
             {
-                await _jSRuntime.InvokeVoidAsync("console.log", Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+                if (obj == null)
+                {
+                    await _jSRuntime.InvokeVoidAsync("console.log", "Was null");
+                }
+                else
+                {
+                    await _jSRuntime.InvokeVoidAsync("console.log", Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+                }
+             
             }
             catch (Exception)
             {

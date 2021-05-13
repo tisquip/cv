@@ -1,4 +1,6 @@
 ﻿
+using System.Net.Http;
+
 using Microsoft.JSInterop;
 
 namespace MyResumeSite.Services
@@ -7,11 +9,12 @@ namespace MyResumeSite.Services
     {
         public NotificationService NotificationService { get;  }
         public SignalRService SignalRService { get; }
-
-        public UtilityService(IJSRuntime jSRuntime)
+        public DataProvidor DataProvidor { get; }
+        public UtilityService(IJSRuntime jSRuntime, HttpClient httpClient)
         {
             NotificationService = new NotificationService(jSRuntime);
             SignalRService = new SignalRService(NotificationService);
+            DataProvidor = new DataProvidor(SignalRService, httpClient, NotificationService);
         }
     }
 }

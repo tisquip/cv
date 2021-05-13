@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.SignalR.Client;
 
-using MyResumeSite.Models;
+using MyResumeSiteModels;
+using MyResumeSiteModels.ApiResponses;
 
 namespace MyResumeSite.Services
 {
@@ -44,6 +43,16 @@ namespace MyResumeSite.Services
             }
         }
 
+        public event EventHandler StandingsUpdated;
+        protected virtual void OnStandingsUpdated()
+        {
+            EventHandler handler = StandingsUpdated;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
         static bool _isAttemptingToConnect = false;
         private readonly NotificationService _notificationService;
 
@@ -59,21 +68,25 @@ namespace MyResumeSite.Services
                 _isAttemptingToConnect = true;
                 try
                 {
-                    string url = Variables.ServerSignalREndpoint;
-
+                    string url = VariablesCore.SignalRFullEndpoint();
                     HubConnection = new HubConnectionBuilder()
                         .WithUrl(url)
                         .WithAutomaticReconnect()
                         .Build();
 
-                    HubConnection.On(Variables.SignalRMethodNameFixturesUpdated, () =>
+                    HubConnection.On(VariablesCore.SignalRMethodNameFixturesUpdated, () =>
                     {
                         OnFixturesUpdates();
                     });
 
-                    HubConnection.On<string>(Variables.SignalRMethodNameLiveMatch, (fixturesJson) =>
+                    HubConnection.On<string>(VariablesCore.SignalRMethodNameLiveMatch, (fixturesJson) =>
                     {
                         OnLiveMatchUpdate(fixturesJson);
+                    });
+
+                    HubConnection.On(VariablesCore.SignalRMethodNameStandings, () =>
+                    {
+                        OnStandingsUpdated();
                     });
 
                     await HubConnection.StartAsync();
