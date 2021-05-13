@@ -1,5 +1,78 @@
-﻿<h3>SingleStandingsComponent</h3>
+﻿@implements IDisposable
+<h6>Standings Summaries</h6>
+@if (UtilityService?.DataProvidor?.IsFetchingStandings ?? true)
+{
+    <div class="text-center">
+        <Loader />
+    </div>
+}
+else
+{
+    if (!UtilityService.DataProvidor.Standings?.Any() ?? true)
+    {
+        <FootballBreakComponent />
+    }
+    else
+    {
+        
+        bool hasSetOne = false;
+        @foreach (var standingsResponse in UtilityService.DataProvidor.Standings)
+        {
+            if (standingsResponse.StandingsApiResponse?.data?.Any() ?? false)
+            {
+                foreach (var standing in standingsResponse.StandingsApiResponse.data)
+                {
+                    if (!hasSetOne)
+                    {
+                        if (standing.standings?.data?.Any() ?? false)
+                        {
+                            var team1 = standing.standings.data.FirstOrDefault(s => s.position == 1);
+                            var team2 = standing.standings.data.FirstOrDefault(s => s.position == 2);
+                            if (team1 != null && team2 != null)
+                            {
+                                List<StandingsData> numberOneAndTwo = new List<StandingsData>() { team1, team2 };
+                                int count = 0;
+
+                                <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(numberOneAndTwo, standingsResponse.LeagueData)" />
+
+                                hasSetOne = true;
+                            }
+
+
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
 
 @code {
+    [CascadingParameter]
+    public UtilityService UtilityService { get; set; }
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged += CallStateHasChanged;
+
+        UtilityService.DataProvidor.StandingsUpdated -= CallStateHasChanged;
+        UtilityService.DataProvidor.StandingsUpdated += CallStateHasChanged;
+
+    }
+
+    async void CallStateHasChanged(object sender, EventArgs eventArgs)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.StandingsUpdated -= CallStateHasChanged;
+
+    }
 }

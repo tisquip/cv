@@ -92,7 +92,7 @@ namespace MyResumeSite.Services
                 await Task.WhenAll(taskLive, taskShedule, taskStandings);
 
                 await _notificationService.ConsoleLog("Pre load Successuly completed");
-
+                await _notificationService.ConsoleLog(Standings);
 
             }
             catch (Exception ex)
@@ -111,6 +111,8 @@ namespace MyResumeSite.Services
 
             Standings = (await _httpClient.GetFromJsonAsync<List<StandingsApiResponseWithLeagueData>>("api/PreLoad/Standings")) ?? new List<StandingsApiResponseWithLeagueData>();
 
+            OnStandingsUpdated();
+
             IsFetchingStandings = false;
             OnFetchingDataStatusChanged();
         }
@@ -122,6 +124,8 @@ namespace MyResumeSite.Services
 
             FixturesWithLeagues = await _httpClient.GetFromJsonAsync<FixturesWithLeagues>("api/PreLoad/Schedule");
 
+            OnSheduleUpdated();
+
             IsFetchingSchedule = false;
             OnFetchingDataStatusChanged();
         }
@@ -132,6 +136,8 @@ namespace MyResumeSite.Services
             OnFetchingDataStatusChanged();
 
             LiveMatches = await _httpClient.GetFromJsonAsync<Fixtures>("api/PreLoad/LiveMatches");
+
+            OnLiveGameRecieved();
 
             IsFetchingLiveMatches = true;
             OnFetchingDataStatusChanged();

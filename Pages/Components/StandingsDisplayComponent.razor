@@ -1,0 +1,45 @@
+﻿@if (Options != null && Options.LeaguesData != null && Options.StandingsData != null)
+{
+    <div class="card mb-2">
+        <div class="p-2">
+            <p class="mb-0 fw-bolder"><img style="max-height: 30px" src="@Options.LeaguesData.logo_path" /> &nbsp; &nbsp; @Options.LeaguesData.name </p>
+        </div>
+        <hr class="m-0" />
+        <div class="table-responsive">
+            <table class="table table-striped mb-0 table-sm small">
+                <tbody>
+                    <tr>
+                        <td>Num</td>
+                        <td>Team</td>
+                        <td>Played</td>
+                        <td>Won</td>
+                        <td>Drew</td>
+                        <td>Lost</td>
+                        <td>PTS</td>
+                    </tr>
+                    @foreach (var team in Options.StandingsData)
+                    {
+                        <tr>
+                            <td>@team.position.</td>
+                            <td>@team.team_name</td>
+                            <td>@team.overall.games_played</td>
+                            <td>@team.overall.won</td>
+                            <td>@team.overall.draw</td>
+                            <td>@team.overall.lost</td>
+                            <td>@team.total.points</td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+}
+
+
+
+@code {
+    [Parameter]
+    public StandingsDisplayComponentOptions Options { get; set; }
+}

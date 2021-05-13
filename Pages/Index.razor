@@ -4,27 +4,26 @@
 
 
 
+
+
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link kt-pointer @activeMain" @onclick="() => ChangeTab(NavigationTabState.Main)" >Summary</a>
+        <a class="nav-link kt-pointer @activeMain" @onclick="() => ChangeTab(NavigationTabState.Main)">Summary</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link kt-pointer @activeLiveMatches" @onclick="() => ChangeTab(NavigationTabState.LiveMatches)" >All Live Matches</a>
+        <a class="nav-link kt-pointer @activeLiveMatches" @onclick="() => ChangeTab(NavigationTabState.LiveMatches)">All Live Matches</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link kt-pointer @activeStandings" @onclick="() => ChangeTab(NavigationTabState.Standings)" >Standings</a>
+        <a class="nav-link kt-pointer @activeStandings" @onclick="() => ChangeTab(NavigationTabState.Standings)">Standings</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link kt-pointer @activeSchedule" @onclick="() => ChangeTab(NavigationTabState.Schedule)" >Schedule</a>
+        <a class="nav-link kt-pointer @activeSchedule" @onclick="() => ChangeTab(NavigationTabState.Schedule)">Schedule</a>
     </li>
 </ul>
 
 <div class="p-3">
     @switch (_currentTab)
     {
-        case NavigationTabState.Main:
-            <HybridComponent />
-            break;
         case NavigationTabState.LiveMatches:
             <LiveMatchesComponent />
             break;
@@ -35,7 +34,19 @@
             <SheduleComponent />
             break;
         default:
-            <HybridComponent />
+            <div class="row">
+                <div class="col-md-6">
+                    <SingleLiveMatchComponent />
+                    <br />
+                    <SingleUpcomingMatchComponent />
+                </div>
+                <div class="col-md-6">
+                    <SingleStandingsComponent />
+                    <div>
+                        <button class="btn btn-link text-center small ml-2" @onclick="() => ChangeTab(NavigationTabState.Standings)">view all and full standings</button>
+                    </div>
+                </div>
+            </div>
             break;
     }
 </div>
