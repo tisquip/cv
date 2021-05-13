@@ -111,6 +111,32 @@ namespace MyResumeSite.Services
 
             Standings = (await _httpClient.GetFromJsonAsync<List<StandingsApiResponseWithLeagueData>>("api/PreLoad/Standings")) ?? new List<StandingsApiResponseWithLeagueData>();
 
+            if (Standings?.Any() ?? false)
+            {
+                var Scottish = Standings.FirstOrDefault(s => s.StandingsApiResponse.data.Any(s => s.name.ToUpper() == "1st Phase".ToUpper()));
+                if (Scottish != null)
+                {
+                    Scottish.StandingsApiResponse.data = Scottish.StandingsApiResponse.data.Where(d => d.name.ToUpper() == "1st Phase".ToUpper()).ToArray();
+                }
+
+                var Danish = Standings.FirstOrDefault(s => s.StandingsApiResponse.data.Any(s => s.name.ToUpper() == "Regular Season".ToUpper()));
+                if (Danish != null)
+                {
+                    Danish.StandingsApiResponse.data = Danish.StandingsApiResponse.data.Where(d => d.name.ToUpper() == "Regular Season".ToUpper()).ToArray();
+                }
+
+                Standings = new List<StandingsApiResponseWithLeagueData>();
+                if (Scottish != null)
+                {
+                    Standings.Add(Scottish);
+                }
+
+                if (Danish != null)
+                {
+                    Standings.Add(Danish);
+                }
+            }
+
             OnStandingsUpdated();
 
             IsFetchingStandings = false;

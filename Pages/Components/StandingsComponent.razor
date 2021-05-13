@@ -1,5 +1,68 @@
-﻿<h3>StandingsComponent</h3>
+﻿@implements IDisposable
+<h6>All Standings From Scottish and Danish Leagues</h6>
+<div class="row">
+    @if (UtilityService?.DataProvidor?.IsFetchingStandings ?? true)
+    {
+        <div class="text-center">
+            <Loader />
+        </div>
+    }
+    else
+    {
+        if (!UtilityService.DataProvidor.Standings?.Any() ?? true)
+        {
+            <FootballBreakComponent />
+        }
+        else
+        {
+
+            foreach (var standingsResponse in UtilityService.DataProvidor.Standings)
+            {
+                if (standingsResponse.StandingsApiResponse?.data?.Any() ?? false)
+                {
+                    foreach (var standing in standingsResponse.StandingsApiResponse.data)
+                    {
+                        if (standing.standings?.data?.Any() ?? false)
+                        {
+
+                            <div class="col-md-6">
+                                <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(standing.standings.data.ToList(), standingsResponse.LeagueData)" />
+                            </div>
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+</div>
+
 
 @code {
+    [CascadingParameter]
+    public UtilityService UtilityService { get; set; }
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged += CallStateHasChanged;
+
+        UtilityService.DataProvidor.StandingsUpdated -= CallStateHasChanged;
+        UtilityService.DataProvidor.StandingsUpdated += CallStateHasChanged;
+
+    }
+
+    async void CallStateHasChanged(object sender, EventArgs eventArgs)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.StandingsUpdated -= CallStateHasChanged;
+
+    }
 }
