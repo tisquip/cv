@@ -14,9 +14,15 @@
     text-align: center
 }
 
-.kt-flex-vertical-center{
+.kt-flex-vertical-center-column {
     display: flex;
-    align-items:center;
+    justify-content: center;
+    flex-direction:column;
+}
+
+.kt-flex-vertical-center {
+    display: flex;
+    align-items: center;
 }
 
 

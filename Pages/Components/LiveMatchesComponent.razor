@@ -14,15 +14,16 @@ else
             <div class="col-md-6">
                 <div class="card">
                     <div class="row no-gutters pr-4 pl-4 pt-4 pb-0">
-                        <div class="col-md-1 kt-flex-vertical-center">
-                            <div class="kt-live-logo">
-                                <img class="img-fluid kt-live-team-logo my-auto" src="@fixtureData.localTeam.data.Logo_Path" />
+                        <div class="col-md-4">
+                            <div class="kt-flex-vertical-center-column">
+                                <div class="kt-live-logo">
+                                    <img class="img-fluid kt-live-team-logo my-auto" src="@fixtureData.localTeam.data.Logo_Path" style="max-width: 60px" />
+                                </div>
+                                <div class="kt-live-team-name my-auto mx-auto">
+                                    <p class="kt-team-name font-weight-bolder mb-0 text-center">@fixtureData.localTeam.data.Name</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 kt-flex-vertical-center">
-                            <div class="kt-live-team-name my-auto mx-auto">
-                                <p class="kt-team-name font-weight-bolder mb-0 text-center">@fixtureData.localTeam.data.Name</p>
-                            </div>
+                           
                         </div>
                         <div class="col-md-4 kt-flex-vertical-center">
                             <div class="kt-live-game-result mx-auto">
@@ -56,15 +57,16 @@ else
                                 }
                             </div>
                         </div>
-                        <div class="col-md-3 kt-flex-vertical-center">
-                            <div class="kt-live-team-name my-auto mx-auto">
-                                <p class="kt-team-name font-weight-bolder mb-0 text-center">@fixtureData.visitorTeam.data.Name</p>
+                        <div class="col-md-4">
+                            <div class="kt-flex-vertical-center-column">
+                                <div class="kt-live-logo">
+                                    <img class="img-fluid kt-live-team-logo" src="@fixtureData.visitorTeam.data.Logo_Path" style="max-width: 60px" />
+                                </div>
+                                <div class="kt-live-team-name my-auto mx-auto">
+                                    <p class="kt-team-name font-weight-bolder mb-0 text-center">@fixtureData.visitorTeam.data.Name</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-1 kt-flex-vertical-center kt-flex-vertical-center">
-                            <div class="kt-live-logo">
-                                <img class="img-fluid kt-live-team-logo" src="@fixtureData.visitorTeam.data.Logo_Path" />
-                            </div>
+                          
                         </div>
                     </div>
                     @if (fixtureData.stats?.data?.Any() ?? false)

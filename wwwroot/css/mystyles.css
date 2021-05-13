@@ -11,6 +11,11 @@
   border-radius: 2px;
   text-align: center; }
 
+.kt-flex-vertical-center-column {
+  display: flex;
+  justify-content: center;
+  flex-direction: column; }
+
 .kt-flex-vertical-center {
   display: flex;
   align-items: center; }
