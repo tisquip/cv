@@ -49,9 +49,9 @@
             <nav id="navbar" class="nav-menu navbar">
                 <ul>
                     <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                    <li><a href="#apisample" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
                     <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
                     <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
+                    <li><a href="#apisample" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Api Sample</span></a></li>
                     <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
                     <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>
                     <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
@@ -69,21 +69,7 @@
 
     <main id="main">
 
-        <!-- ======= Api Section ======= -->
-        <section id="apisample" class="about">
-            
-            <div class="container">
 
-                <div class="section-title">
-                    <h2>Api Sample</h2>
-                    <p>The platform used in this sample is .Net 5 and the other various technologies, languages and concepts implemented include - C#, Blazor WebAssembly, SignalR, Background Worker and Xamarin Forms</p>
-                    <p>This is a small sample just to showcase some capabilities. This sample calls an external sports api to get Scottish Premier League and Danish Premier League Live games, shedules as well as standings.</p>
-                </div>
-
-                <div id="app">Loading...</div>
-
-            </div>
-        </section><!-- End Api Section -->
 
 
         <!-- ======= About Section ======= -->
@@ -244,6 +230,27 @@
 
             </div>
         </section><!-- End Skills Section -->
+        <!-- ======= Api Section ======= -->
+        <section id="apisample" class="about">
+
+            <div class="container">
+
+                <div class="section-title">
+                    <h2>Api Sample</h2>
+                    <p>The platform used in this sample is .Net 5 and the other various technologies, languages and concepts implemented include - C#, Blazor WebAssembly, SignalR, Background Worker and Xamarin Forms</p>
+                    <p>This is a small sample just to showcase some capabilities. This sample calls an external sports api to get Scottish Premier League and Danish Premier League Live games, shedules as well as standings.</p>
+                </div>
+
+                <!-- Blazor App-->
+                <div id="app">
+                    <div class="text-center">
+                        <p><em>...loading api, please wait</em></p>
+                        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End Api Section -->
         <!-- ======= Resume Section ======= -->
         <section id="resume" class="resume">
             <div class="container">
