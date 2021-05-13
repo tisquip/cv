@@ -1,51 +1,52 @@
 ﻿@implements IDisposable
-<h6>Standings Summaries</h6>
-@if (UtilityService?.DataProvidor?.IsFetchingStandings ?? true)
-{
-    <div class="text-center">
-        <Loader />
-    </div>
-}
-else
-{
-    if (!UtilityService.DataProvidor.Standings?.Any() ?? true)
+<h6 class="text-center">Standings Summaries</h6>
+<div class="text-center">
+    @if (UtilityService?.DataProvidor?.IsFetchingStandings ?? true)
     {
-        <FootballBreakComponent />
+        <Loader />
     }
     else
     {
-        
-        bool hasSetOne = false;
-        @foreach (var standingsResponse in UtilityService.DataProvidor.Standings)
+        if (!UtilityService.DataProvidor.Standings?.Any() ?? true)
         {
-            if (standingsResponse.StandingsApiResponse?.data?.Any() ?? false)
+            <FootballBreakComponent />
+        }
+        else
+        {
+
+            bool hasSetOne = false;
+            @foreach (var standingsResponse in UtilityService.DataProvidor.Standings)
             {
-                foreach (var standing in standingsResponse.StandingsApiResponse.data)
+                if (standingsResponse.StandingsApiResponse?.data?.Any() ?? false)
                 {
-                    if (!hasSetOne)
+                    foreach (var standing in standingsResponse.StandingsApiResponse.data)
                     {
-                        if (standing.standings?.data?.Any() ?? false)
+                        if (!hasSetOne)
                         {
-                            var team1 = standing.standings.data.FirstOrDefault(s => s.position == 1);
-                            var team2 = standing.standings.data.FirstOrDefault(s => s.position == 2);
-                            if (team1 != null && team2 != null)
+                            if (standing.standings?.data?.Any() ?? false)
                             {
-                                List<StandingsData> numberOneAndTwo = new List<StandingsData>() { team1, team2 };
+                                var team1 = standing.standings.data.FirstOrDefault(s => s.position == 1);
+                                var team2 = standing.standings.data.FirstOrDefault(s => s.position == 2);
+                                if (team1 != null && team2 != null)
+                                {
+                                    List<StandingsData> numberOneAndTwo = new List<StandingsData>() { team1, team2 };
 
-                                <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(numberOneAndTwo, standingsResponse.LeagueData)" />
+                                    <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(numberOneAndTwo, standingsResponse.LeagueData)" />
 
-                                hasSetOne = true;
+                                    hasSetOne = true;
+                                }
+
+
                             }
-
-
                         }
-                    }
 
+                    }
                 }
             }
         }
     }
-}
+</div>
+
 
 @code {
     [CascadingParameter]

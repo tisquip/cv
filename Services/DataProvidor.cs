@@ -9,7 +9,7 @@ using MyResumeSiteModels.ApiResponses;
 
 namespace MyResumeSite.Services
 {
-    public class DataProvidor
+    public class DataProvidor : IDisposable
     {
         public event EventHandler SheduleUpdated;
 
@@ -76,6 +76,31 @@ namespace MyResumeSite.Services
             _signalRService = signalRService;
             _httpClient = httpClient;
             _notificationService = notificationService;
+
+            _signalRService.FixturesUpdates -= SignalRService_FixturesUpdates;
+            _signalRService.FixturesUpdates += SignalRService_FixturesUpdates;
+
+            _signalRService.LiveMatchUpdate -= SignalRService_LiveMatchUpdate;
+            _signalRService.LiveMatchUpdate += SignalRService_LiveMatchUpdate;
+
+            _signalRService.StandingsUpdated -= SignalRService_StandingsUpdated;
+            _signalRService.StandingsUpdated += SignalRService_StandingsUpdated;
+        }
+
+        async void SignalRService_StandingsUpdated(object sender, EventArgs e)
+        {
+            await SetStandingsFromPreLoad();
+        }
+
+        void SignalRService_LiveMatchUpdate(object sender, Fixtures fixtures)
+        {
+            LiveMatches = fixtures;
+            OnLiveGameRecieved();
+        }
+
+        async void SignalRService_FixturesUpdates(object sender, EventArgs e)
+        {
+            await SetScheduleFromPreLoad();
         }
 
         public async Task GetPreLoadData()
@@ -165,8 +190,17 @@ namespace MyResumeSite.Services
 
             OnLiveGameRecieved();
 
-            IsFetchingLiveMatches = true;
+            IsFetchingLiveMatches = false;
             OnFetchingDataStatusChanged();
+        }
+
+        public void Dispose()
+        {
+            _signalRService.FixturesUpdates -= SignalRService_FixturesUpdates;
+
+            _signalRService.LiveMatchUpdate -= SignalRService_LiveMatchUpdate;
+
+            _signalRService.StandingsUpdated -= SignalRService_StandingsUpdated;
         }
     }
 }

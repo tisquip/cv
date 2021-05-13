@@ -1,5 +1,85 @@
-﻿<h3>SingleLiveMatchComponent</h3>
+﻿@implements IDisposable
+<h6 class="text-center">Live Game</h6>
+<div class="text-center">
+    @if (UtilityService.DataProvidor.IsFetchingLiveMatches)
+    {
+        <Loader />
+    }
+    else if (fixtureDataToShow == null)
+    {
+        <p class="small">
+            <em>
+                No Scottish or Danish live games at the moment, please check schedule
+            </em>
+        </p>
+    }
+    else
+    {
+        <LiveMatchDisplayComponent Options="new LiveMatchDisplayComponentOptions(fixtureDataToShow)" />
+    }
+</div>
+
 
 @code {
+    [CascadingParameter]
+    public UtilityService UtilityService { get; set; }
+
+    FixturesData fixtureDataToShow;
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        UtilityService.DataProvidor.LiveGameRecieved -= RequestStateChanged;
+        UtilityService.DataProvidor.LiveGameRecieved += RequestStateChanged;
+
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= RequestStateChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged += RequestStateChanged;
+    }
+
+    async void RequestStateChanged(object sender, EventArgs eventArgs)
+    {
+        SetLiveMatch();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void SetLiveMatch()
+    {
+        if (!UtilityService.DataProvidor.IsFetchingLiveMatches && (UtilityService.DataProvidor.LiveMatches?.data?.Any() ?? false))
+        {
+            bool hasBeenSet = false;
+            var fixtData = UtilityService.DataProvidor.LiveMatches.data
+                .OrderBy(l => DateTime.Parse(l.time.Starting_At.Date_Time))
+                .ToList();
+
+            if (fixtureDataToShow != null && fixtureDataToShow.time.Minute > 0 && fixtureDataToShow.time.Minute < 90)
+            {
+                fixtureDataToShow = fixtData.FirstOrDefault(f => f.id == fixtureDataToShow.id);
+                if (fixtureDataToShow != null)
+                {
+                    hasBeenSet = true;
+                }
+            }
+
+            if (!hasBeenSet)
+            {
+                fixtureDataToShow = fixtData.FirstOrDefault(f => f.time?.Status == "LIVE");
+                if (fixtureDataToShow == null)
+                {
+                    fixtureDataToShow = fixtData.FirstOrDefault();
+                }
+            }
+        }
+    }
+
+
+
+    public void Dispose()
+    {
+        UtilityService.DataProvidor.LiveGameRecieved -= RequestStateChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= RequestStateChanged;
+
+
+    }
 
 }
