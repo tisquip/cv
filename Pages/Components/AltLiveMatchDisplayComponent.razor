@@ -1,14 +1,16 @@
 ﻿@if (Options?.FixturesData != null)
 {
-    <div class="card w-100" >
+    string cardMargin = Options.NoCardMargin ? "m-0" : "";
+
+    <div class="card w-100 @cardMargin" >
             <div class="row no-gutters pr-4 pl-4 pt-4 pb-0">
                 <div class="col-md-4">
                     <div class="kt-flex-vertical-center-column">
                         <div class="kt-live-logo mx-auto">
-                            <img class="img-fluid kt-live-team-logo my-auto" src="@Options.FixturesData.localTeam.data.Logo_Path" style="max-width: 60px" />
+                            <img class="img-fluid kt-live-team-logo my-auto" src="@Options.FixturesData.localTeam?.data?.Logo_Path" style="max-width: 60px" />
                         </div>
                         <div class="kt-live-team-name my-auto mx-auto">
-                            <p class="kt-team-name font-weight-bolder mb-0 text-center">@Options.FixturesData.localTeam.data.Name</p>
+                            <p class="kt-team-name font-weight-bolder mb-0 text-center">@Options.FixturesData.localTeam?.data?.Name</p>
                         </div>
                     </div>
 
@@ -17,13 +19,13 @@
                     <div class="kt-live-game-result mx-auto">
                         <p class="small text-center">
                             <span class="small">
-                                @Options.FixturesData.league.data.name
+                                @Options.FixturesData.league?.data?.name
                             </span>
                         </p>
                         <h3 class="text-center mb-0 font-weight-bolder">
-                            @Options.FixturesData.scores.Localteam_Score : @Options.FixturesData.scores.Visitorteam_Score
+                            @Options.FixturesData.scores?.Localteam_Score : @Options.FixturesData.scores?.Visitorteam_Score
                         </h3>
-                        @if (Options.FixturesData.time.Minute.HasValue)
+                        @if (Options.FixturesData.time?.Minute.HasValue ?? false)
                         {
                             <p class="small text-center">
                                 <span class="small">played: @Options.FixturesData.time.Minute</span>
@@ -36,22 +38,26 @@
                         }
                         else
                         {
-                            DateTime time = DateTime.Parse(Options.FixturesData.time.Starting_At.Date_Time);
-                            <p class="small text-center">
-                                <span class="small">
-                                    Starting at: @time.ToLongTimeString() UTC | @((time.AddHours(2)).ToLongTimeString())
-                                </span>
-                            </p>
+
+                            @if (DateTime.TryParse(Options.FixturesData.time.Starting_At.Date_Time, out DateTime time))
+                            {
+                                <p class="small text-center">
+                                    <span class="small">
+                                        Starting at: @time.ToLongTimeString() UTC | @((time.AddHours(2)).ToLongTimeString())
+                                    </span>
+                                </p>
+                            }
+
                         }
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="kt-flex-vertical-center-column">
                         <div class="kt-live-logo mx-auto">
-                            <img class="img-fluid kt-live-team-logo" src="@Options.FixturesData.visitorTeam.data.Logo_Path" style="max-width: 60px" />
+                            <img class="img-fluid kt-live-team-logo" src="@Options.FixturesData.visitorTeam?.data?.Logo_Path" style="max-width: 60px" />
                         </div>
                         <div class="kt-live-team-name my-auto mx-auto">
-                            <p class="kt-team-name font-weight-bolder mb-0 text-center">@Options.FixturesData.visitorTeam.data.Name</p>
+                            <p class="kt-team-name font-weight-bolder mb-0 text-center">@Options.FixturesData.visitorTeam?.data?.Name</p>
                         </div>
                     </div>
 

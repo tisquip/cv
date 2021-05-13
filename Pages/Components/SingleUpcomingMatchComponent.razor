@@ -1,5 +1,67 @@
-﻿<h3>SingleUpcomingMatchComponent</h3>
+﻿@implements IDisposable
+<h6 class="text-center">Single Upcoming Game</h6>
+<div class="text-center">
+    @if (UtilityService?.DataProvidor?.IsFetchingSchedule ?? true)
+    {
+        <Loader />
+    }
+    else
+    {
+        if (!UtilityService.DataProvidor.FixturesWithLeagues?.Fixtures?.data.Any() ?? true)
+        {
+            <FootballBreakComponent />
+        }
+        else
+        {
+
+            var fixtuesSet = UtilityService.DataProvidor.FixturesWithLeagues.Fixtures.data.OrderBy(f => DateTime.Parse(f.time.Starting_At.Date_Time)).ToList();
+
+
+            var fixture = fixtuesSet.FirstOrDefault(f => DateTime.Parse(f.time.Starting_At.Date_Time) > DateTime.UtcNow);
+            if (fixture == null)
+            {
+                fixture = fixtuesSet.LastOrDefault();
+            }
+
+            if (fixture != null)
+            {
+                <UpcomingFixtureDisplayComponent Options="new UpcomingFixtureDisplayComponentOptions(fixture, true)" />
+            }
+            else
+            {
+                <p class="small"><em>No upcoming fixtures found for the Scottish and Danish leagues</em></p>
+            }
+
+        }
+    }
+</div>
+
 
 @code {
+    [CascadingParameter]
+    public UtilityService UtilityService { get; set; }
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged += CallStateHasChanged;
+
+        UtilityService.DataProvidor.SheduleUpdated -= CallStateHasChanged;
+        UtilityService.DataProvidor.SheduleUpdated += CallStateHasChanged;
+
+    }
+
+    async void CallStateHasChanged(object sender, EventArgs eventArgs)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.SheduleUpdated -= CallStateHasChanged;
+
+    }
 }

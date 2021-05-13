@@ -117,7 +117,7 @@ namespace MyResumeSite.Services
                 await Task.WhenAll(taskLive, taskShedule, taskStandings);
 
                 await _notificationService.ConsoleLog("Pre load Successuly completed");
-                await _notificationService.ConsoleLog(Standings);
+                await _notificationService.ConsoleLog(FixturesWithLeagues);
 
             }
             catch (Exception ex)

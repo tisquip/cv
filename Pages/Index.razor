@@ -37,13 +37,19 @@
             <div class="row">
                 <div class="col-md-6">
                     <SingleLiveMatchComponent />
+                    <div class="mx-auto text-center">
+                        <a class="kt-pointer text-center small" @onclick="() => ChangeTab(NavigationTabState.LiveMatches)"><em>view all live matches</em></a>
+                    </div>
                     <br />
                     <SingleUpcomingMatchComponent />
+                    <div class="mx-auto text-center">
+                        <a class="kt-pointer text-center small" @onclick="() => ChangeTab(NavigationTabState.Schedule)"><em>view all upcoming games</em> </a>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <SingleStandingsComponent />
-                    <div>
-                        <button class="btn btn-link text-center small ml-2" @onclick="() => ChangeTab(NavigationTabState.Standings)">view all and full standings</button>
+                    <div class="mx-auto text-center">
+                        <a class="kt-pointer text-center small" @onclick="() => ChangeTab(NavigationTabState.Standings)"><em>view all and full standings</em> </a>
                     </div>
                 </div>
             </div>

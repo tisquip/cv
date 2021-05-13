@@ -1,5 +1,68 @@
-﻿<h3>SheduleComponent</h3>
+﻿@implements IDisposable
+<h6 class="text-center">All Scottish and Danish Upcoming Game</h6>
+<div class="text-center">
+    @if (UtilityService?.DataProvidor?.IsFetchingSchedule ?? true)
+    {
+        <Loader />
+    }
+    else
+    {
+        if (!UtilityService.DataProvidor.FixturesWithLeagues?.Fixtures?.data.Any() ?? true)
+        {
+            <FootballBreakComponent />
+        }
+        else
+        {
+
+            var fixtuesSet = UtilityService.DataProvidor.FixturesWithLeagues.Fixtures.data.Where(f => DateTime.Parse(f.time.Starting_At.Date_Time) > DateTime.UtcNow).OrderBy(f => DateTime.Parse(f.time.Starting_At.Date_Time)).ToList();
+
+
+            if (fixtuesSet?.Any() ?? false)
+            {
+                <div class="row" style="max-height: 450px; overflow:auto">
+                    @foreach (var fixt in fixtuesSet)
+                    {
+                    <div class="col-md-6">
+                        <UpcomingFixtureDisplayComponent Options="new UpcomingFixtureDisplayComponentOptions(fixt)" />
+                    </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="small"><em>No upcoming fixtures found for the Scottish and Danish leagues</em></p>
+            }
+
+        }
+    }
+</div>
+
 
 @code {
+    [CascadingParameter]
+    public UtilityService UtilityService { get; set; }
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.FetchingDataStatusChanged += CallStateHasChanged;
+
+        UtilityService.DataProvidor.SheduleUpdated -= CallStateHasChanged;
+        UtilityService.DataProvidor.SheduleUpdated += CallStateHasChanged;
+
+    }
+
+    async void CallStateHasChanged(object sender, EventArgs eventArgs)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        UtilityService.DataProvidor.FetchingDataStatusChanged -= CallStateHasChanged;
+        UtilityService.DataProvidor.SheduleUpdated -= CallStateHasChanged;
+
+    }
 }
