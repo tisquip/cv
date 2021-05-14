@@ -3,9 +3,6 @@
 @using MyResumeSite.Models
 
 
-
-
-
 <ul class="nav nav-tabs">
     <li class="nav-item">
         <a class="nav-link kt-pointer @activeMain" @onclick="() => ChangeTab(NavigationTabState.Main)">Summary</a>
@@ -61,6 +58,9 @@
 
 
 @code{
+    [CascadingParameter]
+    public UtilityService Utility { get; set; }
+
     static string active = "active";
     string activeMain = active;
     string activeLiveMatches = "";
