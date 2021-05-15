@@ -22,18 +22,19 @@
                     </h3>
                     @if (DateTime.TryParse(Options.FixturesData.time.Starting_At.Date_Time, out DateTime time))
                     {
-                <p class="small text-center">
-                    <span class="small">
-                        @time.ToLongDateString()
-                    </span>
-                    <br />
-                    <span class="small">
-                        <span class="small">
-                            Starting at: @time.ToLongTimeString() UTC | @((time.AddHours(2)).ToLongTimeString()) ZIM
-                        </span>
-                    </span>
-                   
-                </p>
+                        <p class="text-center">
+                            <span class="small">@time.ToLongDateString()</span>
+                           
+                            <br />
+                            <span class="small">
+                                <span class="small">Starting at: </span>
+                                <br />
+                            </span>
+                            <span class="text-center">
+                                <TimeZoneComponent Options="new TimeZoneComponentOptions(time)" />
+                            </span>
+
+                        </p>
                     }
                 </div>
             </div>

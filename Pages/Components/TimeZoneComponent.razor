@@ -1,0 +1,21 @@
+﻿@if (Options != null)
+{
+    string small = Options.UseSmallClass ? "small" : "";
+<span class="text-center @small">
+    <span class="@small text-center">
+        <span class="small">
+            <em>(Zim Time = CAT Time)</em>
+        </span>
+        
+        <br />
+        @((Options.DateTimeUtc.AddHours(2)).ToLongTimeString()) CAT
+        <br />
+        @Options.DateTimeUtc.ToLongTimeString() UTC
+    </span>
+</span>
+}
+
+@code {
+    [Parameter]
+    public TimeZoneComponentOptions Options { get; set; }
+}
