@@ -4,6 +4,14 @@ $loaderColor: #242b56;
     cursor : pointer;
 }
 
+.socialmediaicon {
+    margin: 0px !important;
+    border: none !important;
+    height: 18px !important;
+    width: 18px !important;
+    display: inline !important;
+}
+
 .kt-live-card {
     background-color: $liveGameCardBackgroundColor;
     color: white;

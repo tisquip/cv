@@ -1,6 +1,13 @@
 ﻿.kt-pointer {
   cursor: pointer; }
 
+.socialmediaicon {
+  margin: 0px !important;
+  border: none !important;
+  height: 18px !important;
+  width: 18px !important;
+  display: inline !important; }
+
 .kt-live-card {
   background-color: #242b56;
   color: white;
