@@ -17,10 +17,14 @@
             var fixtuesSet = UtilityService.DataProvidor.FixturesWithLeagues.Fixtures.data.OrderBy(f => DateTime.Parse(f.time.Starting_At.Date_Time)).ToList();
 
 
-            var fixture = fixtuesSet.FirstOrDefault(f => DateTime.Parse(f.time.Starting_At.Date_Time) > DateTime.UtcNow);
+            var fixture = fixtuesSet.FirstOrDefault(f => DateTime.Parse(f.time.Starting_At.Date_Time).Date != DateTime.UtcNow.Date && DateTime.Parse(f.time.Starting_At.Date_Time) > DateTime.UtcNow);
             if (fixture == null)
             {
-                fixture = fixtuesSet.LastOrDefault();
+                fixture = fixtuesSet.FirstOrDefault(f => DateTime.Parse(f.time.Starting_At.Date_Time) > DateTime.UtcNow);
+                if (fixture == null)
+                {
+                    fixture = fixtuesSet.LastOrDefault();
+                }
             }
 
             if (fixture != null)

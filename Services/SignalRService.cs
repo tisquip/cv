@@ -89,7 +89,26 @@ namespace MyResumeSite.Services
                         OnStandingsUpdated();
                     });
 
-                    await HubConnection.StartAsync();
+                    int numberOfTries = 0;
+
+                    while (numberOfTries < 8 && (HubConnection == null || HubConnection.State == HubConnectionState.Disconnected))
+                    {
+                        await _notificationService.ConsoleLog($"Attempting to connect. Number of tries: {numberOfTries}");
+                        try
+                        {
+                            await HubConnection.StartAsync();
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        
+                        if (HubConnection == null || HubConnection.State == HubConnectionState.Disconnected)
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(5));
+                        }
+                        numberOfTries++;
+                    }
+                   
                 }
                 catch (Exception ex)
                 {

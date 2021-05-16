@@ -14,30 +14,25 @@
         else
         {
 
-            bool hasSetOne = false;
             @foreach (var standingsResponse in UtilityService.DataProvidor.Standings)
             {
                 if (standingsResponse.StandingsApiResponse?.data?.Any() ?? false)
                 {
                     foreach (var standing in standingsResponse.StandingsApiResponse.data)
                     {
-                        if (!hasSetOne)
+                        if (standing.standings?.data?.Any() ?? false)
                         {
-                            if (standing.standings?.data?.Any() ?? false)
+                            var team1 = standing.standings.data.FirstOrDefault(s => s.position == 1);
+                            var team2 = standing.standings.data.FirstOrDefault(s => s.position == 2);
+                            if (team1 != null && team2 != null)
                             {
-                                var team1 = standing.standings.data.FirstOrDefault(s => s.position == 1);
-                                var team2 = standing.standings.data.FirstOrDefault(s => s.position == 2);
-                                if (team1 != null && team2 != null)
-                                {
-                                    List<StandingsData> numberOneAndTwo = new List<StandingsData>() { team1, team2 };
+                                List<StandingsData> numberOneAndTwo = new List<StandingsData>() { team1, team2 };
 
-                                    <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(numberOneAndTwo, standingsResponse.LeagueData)" />
-
-                                    hasSetOne = true;
-                                }
-
+                                <StandingsDisplayComponent Options="new StandingsDisplayComponentOptions(numberOneAndTwo, standingsResponse.LeagueData)" />
 
                             }
+
+
                         }
 
                     }

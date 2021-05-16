@@ -7,6 +7,8 @@ namespace MyResumeSite.Services
 {
     public class UtilityService
     {
+        private readonly HttpClient _httpClient;
+
         public NotificationService NotificationService { get;  }
         public SignalRService SignalRService { get; }
         public DataProvidor DataProvidor { get; }
@@ -15,6 +17,7 @@ namespace MyResumeSite.Services
             NotificationService = new NotificationService(jSRuntime);
             SignalRService = new SignalRService(NotificationService);
             DataProvidor = new DataProvidor(SignalRService, httpClient, NotificationService);
+            _httpClient = httpClient;
         }
     }
 }
