@@ -1,4 +1,7 @@
-﻿.kt-pointer {
+﻿.contact .php-email-form .error-message {
+  display: none !important; }
+
+.kt-pointer {
   cursor: pointer; }
 
 .socialmediaicon {

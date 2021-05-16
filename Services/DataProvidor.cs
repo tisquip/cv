@@ -103,27 +103,42 @@ namespace MyResumeSite.Services
             await SetScheduleFromPreLoad();
         }
 
+        void SetAllIsFetching(bool isFetching)
+        {
+            IsFetchingLiveMatches = isFetching;
+            IsFetchingStandings = isFetching;
+            IsFetchingSchedule = isFetching;
+
+            OnFetchingDataStatusChanged();
+        }
+
         public async Task GetPreLoadData()
         {
-            try
+            int attempts = 0;
+            while (attempts < 7)
             {
-                await _notificationService.ConsoleLog("Pre load Called");
-                Task taskLive = SetLiveGamesFromPreLoad();
+                try
+                {
+                    await _notificationService.ConsoleLog($"{DateTime.UtcNow}: Pre load Called : Number of times {attempts} ");
+                    Task taskLive = SetLiveGamesFromPreLoad();
 
-                Task taskShedule = SetScheduleFromPreLoad();
+                    Task taskShedule = SetScheduleFromPreLoad();
 
-                Task taskStandings = SetStandingsFromPreLoad();
+                    Task taskStandings = SetStandingsFromPreLoad();
 
-                await Task.WhenAll(taskLive, taskShedule, taskStandings);
+                    await Task.WhenAll(taskLive, taskShedule, taskStandings);
 
-                await _notificationService.ConsoleLog("Pre load Successuly completed");
-
-            }
-            catch (Exception ex)
-            {
-                await _notificationService.ConsoleLog("Error occured in Preload");
-                await _notificationService.ConsoleLog(ex);
-
+                    await _notificationService.ConsoleLog("Pre load Successuly completed");
+                    attempts = 8;
+                }
+                catch (Exception ex)
+                {
+                    await _notificationService.ConsoleLog($"Error occured in Preload Number : {attempts}");
+                    await _notificationService.ConsoleLog(ex);
+                    SetAllIsFetching(false);
+                    attempts++;
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+                }
             }
 
         }

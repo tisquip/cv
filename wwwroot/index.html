@@ -200,22 +200,10 @@
 
                 <div class="section-title">
                     <h2>Resume</h2>
-                    <!--<p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>-->
                 </div>
 
                 <div class="row">
                     <div class="col-lg-6" data-aos="fade-up">
-                        <!--<h3 class="resume-title">Sumary</h3>
-    <div class="resume-item pb-0">
-        <h4>Alex Smith</h4>
-        <p><em>Innovative and deadline-driven Graphic Designer with 3+ years of experience designing and developing user-centered digital/print marketing material from initial concept to final, polished deliverable.</em></p>
-        <ul>
-            <li>Portland par 127,Orlando, FL</li>
-            <li>(123) 456-7891</li>
-            <li>alice.barkley@example.com</li>
-        </ul>
-    </div>-->
-
                         <h3 class="resume-title">Education</h3>
                         <div class="resume-item">
                             <h4>Diploma In C# Programming</h4>
@@ -363,7 +351,12 @@ chool_calender" target="_blank">View in Store</a>
                     </div>
 
                     <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                        <form class="php-email-form">
+                            <div class="my-3">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                            </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Your Name</label>
@@ -380,14 +373,14 @@ chool_calender" target="_blank">View in Store</a>
                             </div>
                             <div class="form-group">
                                 <label for="name">Message</label>
-                                <textarea class="form-control" name="message" rows="10" required></textarea>
+                                <textarea class="form-control" name="message" id="body" rows="10" required></textarea>
                             </div>
                             <div class="my-3">
                                 <div class="loading">Loading</div>
                                 <div class="error-message"></div>
                                 <div class="sent-message">Your message has been sent. Thank you!</div>
                             </div>
-                            <div class="text-center"><button type="submit">Send Message</button></div>
+                            <div class="text-center"><button type="submit" id="sendemail">Send Message</button></div>
                         </form>
                     </div>
 
@@ -432,6 +425,66 @@ chool_calender" target="_blank">View in Store</a>
             let year = d.getFullYear();
             let spanYear = $("#year");
             spanYear.html(year);
+
+
+            let inputName = $("#name");
+            let inputEmail = $("#email");
+            let inputSubject = $("#subject");
+            let inputBody = $("#body");
+
+            let buttonSendEmail = $("#sendemail");
+            buttonSendEmail.on("click", function () {
+
+                let name = inputName.val().toString();
+                let email = inputEmail.val().toString();
+                let subject = inputSubject.val().toString();
+                let body = inputBody.val().toString();
+
+
+                let messageSuccess = $(".sent-message");
+                let displayResultClass = "d-block";
+
+                if (messageSuccess.hasClass(displayResultClass)) {
+                    messageSuccess.removeClass(displayResultClass);
+                }
+
+                try {
+                    if (name.length > 0 && email.length > 0 && subject.length > 0 && body.length > 0) {
+                        if (email.includes("@")) {
+                            inputName.val("");
+                            inputEmail.val("");
+                            inputSubject.val("");
+                            inputBody.val("");
+
+                            let data = ["Name: " + name, "Email: " + email, "Subject: " + subject, "Body: " + body];
+
+                            let url = "https://localhost:44371/api/email";
+
+
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: JSON.stringify(data),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    messageSuccess.addClass(displayResultClass);
+                                },
+                                failure: function (errMsg) {
+                                    alert(errMsg);
+                                }
+                            });
+
+                            messageSuccess.addClass(displayResultClass);
+                        }
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+
+
+
+            });
 
         });
     </script>
