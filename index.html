@@ -30,6 +30,19 @@
 </head>
 
 <body>
+    <!--=================
+        A NOTE ABOUT BLAZOR USE HERE:
+        Note that the Blazor Specific App is found further down the line, 
+        You can search the term "Blazor App Starts Here". It should be line 218 
+        of the Source Code - Someone had pointed out to me that they thought 
+        it was just pure HTML when they saw the code, so this is just to let
+        you know where to find the blazor entry point this is because Blazor 
+        specific use in this app, is on the api segment of this app, hence, 
+        there is no need for the static content to wait for the blazor 
+        specific code to finish, so all this static content is outside the 
+        Blazor specific app, whilst part of the Api where I need it, is where its being used
+    =====================-->
+
     <!-- ======= Mobile nav toggle button ======= -->
     <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
@@ -187,7 +200,10 @@
                 <div class="section-title">
                     <h2>Api Sample</h2>
                     <p>The platform used in this sample is .Net 5 and the other various technologies, languages and concepts implemented include - C#, Blazor WebAssembly, SignalR, Background Worker and Xamarin Forms</p>
-                    <p>This is a small sample just to showcase some capabilities. This sample calls an external sports api to get Scottish Premier League and Danish Premier League Live games, shedules as well as standings.</p>
+                    <br />
+                    <p>This is a small Blazor sample (<a href="https://github.com/tisquip/cv" target="_blank">source code here</a>) just to showcase some capabilities. This sample app calls my back-end server project (<a href="https://github.com/tisquip/MyResumeSiteBackEnd" target="_blank">source code here</a>) that has background workers that periodically call (when necessary) an external sports api to get Scottish Premier League and Danish Premier League Live games that update scores every 30seconds when there are live matches, and also retrieves schedules as well as standings.</p>
+                    <br />
+                    <p>From a DevOps perspective, note that the <a href="https://github.com/tisquip/MyResumeSiteBackEnd" target="_blank">server app</a> is built and published to Azure each time a commit to the master branch, this is done via GitHub actions, where as <a href="https://github.com/tisquip/cv" target="_blank">this blazor cv app</a> you are currently viewing is build and then published to a separate branch called <a href="https://github.com/tisquip/cv/tree/gh-pages">gh-pages</a> each time a change is committed to master branch. The <a href="https://github.com/tisquip/cv/tree/gh-pages">gh-pages</a> branch contains the published static files for GitHub Pages to display</p>
                     <p class="mb-0 mt-3 text-center">Download the Android Sample api from the <a href="https://play.google.com/store/apps/details?id=io.github.tisquip.cv.app" target="_blank">Google Play Store, Click here</a></p>
                     <p class="text-center">
                         <a href="https://play.google.com/store/apps/details?id=io.github.tisquip.cv.app" target="_blank">
@@ -196,13 +212,18 @@
                     </p>
                 </div>
 
-                <!-- Blazor App-->
+                <!--==========================
+                Blazor App Starts Here
+                ========================== -->
                 <div id="app">
                     <div class="text-center">
                         <p><em>...loading api, please wait</em></p>
                         <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                     </div>
                 </div>
+                <!--==========================
+                Blazor App Ends Here
+                ========================== -->
 
             </div>
         </section><!-- End Api Section -->
